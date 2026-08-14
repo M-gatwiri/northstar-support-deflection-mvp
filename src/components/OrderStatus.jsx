@@ -6,17 +6,25 @@ function OrderStatus({ goBack }) {
   const [order, setOrder] = useState(null);
   const [error, setError] = useState("");
 
-  function handleSearch() {
-    const foundOrder = orders.find((order) => order.id === orderNumber);
-
-    if (foundOrder) {
-      setOrder(foundOrder);
-      setError("");
-    } else {
-      setOrder(null);
-      setError("We couldn't find an order with that number.");
-    }
+ function handleSearch() {
+  if (!orderNumber.trim()) {
+    setOrder(null);
+    setError("Please enter your order number.");
+    return;
   }
+
+  const foundOrder = orders.find(
+    (order) => order.id === orderNumber.trim().toUpperCase()
+  );
+
+  if (foundOrder) {
+    setOrder(foundOrder);
+    setError("");
+  } else {
+    setOrder(null);
+    setError("We couldn't find an order with that number.");
+  }
+}
 
   return (
     <section>

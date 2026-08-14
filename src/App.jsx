@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SupportOption from "./components/SupportOption";
 import OrderStatus from "./components/OrderStatus";
+import ReturnsRefunds from "./components/ReturnsRefunds";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,13 +23,15 @@ function App() {
         icon="🔃"
         title="Returns and Refunds"
         description="Get help with returning an order or checking your refund"
+        onClick={() => setSelectedOption("returns")}
       />
 
       {selectedOption === "order" && (
-  <OrderStatus
-    goBack={() => setSelectedOption(null)}
-  />
-)}
+        <OrderStatus goBack={() => setSelectedOption(null)} />
+      )}
+      {selectedOption === "returns" && (
+        <ReturnsRefunds goBack={() => setSelectedOption(null)} />
+      )}
     </main>
   );
 }
