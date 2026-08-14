@@ -2,36 +2,50 @@ import { useState } from "react";
 import SupportOption from "./components/SupportOption";
 import OrderStatus from "./components/OrderStatus";
 import ReturnsRefunds from "./components/ReturnsRefunds";
+import "./App.css";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState(null);
 
   return (
-    <main>
-      <h1>Northstar Support Center</h1>
+    <main className="app">
+      <div className="support-container">
+        <header className="support-header">
+          <span className="brand">NORTHSTAR</span>
 
-      <p>How can we help you?</p>
+          <h1>How can we help you?</h1>
 
-      <SupportOption
-        icon="📦"
-        title="Order Status"
-        description="Check where your order is and when it will arrive"
-        onClick={() => setSelectedOption("order")}
-      />
+          <p>
+            Get quick answers to common questions about your orders.
+          </p>
+        </header>
 
-      <SupportOption
-        icon="🔃"
-        title="Returns and Refunds"
-        description="Get help with returning an order or checking your refund"
-        onClick={() => setSelectedOption("returns")}
-      />
+        {!selectedOption && (
+          <div className="support-options">
+            <SupportOption
+              icon="📦"
+              title="Order Status"
+              description="Check where your order is and when it will arrive"
+              onClick={() => setSelectedOption("order")}
+            />
 
-      {selectedOption === "order" && (
-        <OrderStatus goBack={() => setSelectedOption(null)} />
-      )}
-      {selectedOption === "returns" && (
-        <ReturnsRefunds goBack={() => setSelectedOption(null)} />
-      )}
+            <SupportOption
+              icon="🔃"
+              title="Returns & Refunds"
+              description="Get help with returning an order or checking your refund"
+              onClick={() => setSelectedOption("returns")}
+            />
+          </div>
+        )}
+
+        {selectedOption === "order" && (
+          <OrderStatus goBack={() => setSelectedOption(null)} />
+        )}
+
+        {selectedOption === "returns" && (
+          <ReturnsRefunds goBack={() => setSelectedOption(null)} />
+        )}
+      </div>
     </main>
   );
 }

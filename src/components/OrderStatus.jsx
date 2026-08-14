@@ -27,11 +27,20 @@ function OrderStatus({ goBack }) {
 }
 
   return (
-    <section>
+  <section className="support-section">
+    <button className="back-button" onClick={goBack}>
+      ← Back to Support
+    </button>
+
+    <div className="section-header">
+      <span className="section-icon">📦</span>
+
       <h2>Where is your order?</h2>
 
       <p>Enter your order number to check its status.</p>
+    </div>
 
+    <div className="search-box">
       <input
         type="text"
         placeholder="e.g. NS1001"
@@ -39,24 +48,51 @@ function OrderStatus({ goBack }) {
         onChange={(event) => setOrderNumber(event.target.value)}
       />
 
-      <button onClick={handleSearch}>Check Order</button>
+      <button
+  className="primary-button"
+  onClick={handleSearch}
+  disabled={!orderNumber.trim()}
+>
+  Check Order
+</button>
+    </div>
 
-      {error && <p>{error}</p>}
+    <p className="input-hint">
+  Your order number can be found in your order confirmation email.
+</p>
 
-      {order && (
-        <div>
-          <h3>Order #{order.id}</h3>
+    {error && <p className="error-message">{error}</p>}
 
-          <p>Status: {order.status}</p>
+    {order && (
+  <div className="result-card">
+    <div className="result-header">
+      <div>
+        <span className="result-label">Order</span>
+        <h3>#{order.id}</h3>
+      </div>
 
-          <p>Expected delivery: {order.deliveryDate}</p>
+      <span className="status-badge">
+        {order.status}
+      </span>
+    </div>
 
-          <p>Carrier: {order.carrier}</p>
-        </div>
-      )}
-      <button onClick={goBack}>← Back to Support</button>
-    </section>
-  );
+    <div className="order-detail">
+      <span>Expected delivery</span>
+      <strong>{order.deliveryDate}</strong>
+    </div>
+
+    <div className="order-detail">
+      <span>Carrier</span>
+      <strong>{order.carrier}</strong>
+    </div>
+
+    <p className="result-message">
+      Your order is currently {order.status.toLowerCase()}.
+    </p>
+  </div>
+)}
+  </section>
+);
 }
 
 export default OrderStatus;

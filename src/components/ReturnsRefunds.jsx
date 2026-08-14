@@ -24,12 +24,23 @@ function ReturnsRefunds({ goBack }) {
     setError("We couldn't find an order with that number.");
   }
 }
-  return (
-    <section>
+return (
+  <section className="support-section">
+    <button className="back-button" onClick={goBack}>
+      ← Back to Support
+    </button>
+
+    <div className="section-header">
+      <span className="section-icon">🔃</span>
+
       <h2>Returns & Refunds</h2>
 
-      <p>Enter your order number to check return and refund information.</p>
+      <p>
+        Enter your order number to check return and refund information.
+      </p>
+    </div>
 
+    <div className="search-box">
       <input
         type="text"
         placeholder="e.g. NS1001"
@@ -37,44 +48,84 @@ function ReturnsRefunds({ goBack }) {
         onChange={(event) => setOrderNumber(event.target.value)}
       />
 
-      <button onClick={handleSearch}>Check Order</button>
-      <button onClick={goBack}>← Back to Support</button>
-      {error && <p>{error}</p>}
+      <button
+  className="primary-button"
+  onClick={handleSearch}
+  disabled={!orderNumber.trim()}
+>
+  Check Order
+</button>
+    </div>
 
-{order && order.status === "Delivered" && (
-  <div>
-    <h3>Your order is eligible for return</h3>
+    {error && <p className="error-message">{error}</p>}
 
-    <p>Return window: 30 days</p>
+    {order && order.status === "Delivered" && (
+  <div className="result-card success-card">
+    <div className="result-header">
+      <div>
+        <span className="result-label">Return status</span>
+        <h3>Eligible for return</h3>
+      </div>
+
+      <span className="status-badge success-badge">
+        Eligible
+      </span>
+    </div>
 
     <p>
+      Your order was delivered and is eligible for return.
       You can return this order within 30 days of delivery.
     </p>
+
+    <div className="order-detail">
+      <span>Return window</span>
+      <strong>30 days</strong>
+    </div>
   </div>
 )}
 
 {order && order.status === "Cancelled" && (
-  <div>
-    <h3>Your order was cancelled</h3>
+  <div className="result-card refund-card">
+    <div className="result-header">
+      <div>
+        <span className="result-label">Refund status</span>
+        <h3>Refund issued</h3>
+      </div>
 
-    <p>Your refund has been issued.</p>
+      <span className="status-badge refund-badge">
+        Refunded
+      </span>
+    </div>
+
+    <p>
+      Your order was cancelled and your refund has been issued.
+    </p>
   </div>
 )}
 
 {order &&
   order.status !== "Delivered" &&
   order.status !== "Cancelled" && (
-    <div>
-      <h3>Your order cannot be returned yet</h3>
+    <div className="result-card pending-card">
+      <div className="result-header">
+        <div>
+          <span className="result-label">Return status</span>
+          <h3>Not available yet</h3>
+        </div>
+
+        <span className="status-badge pending-badge">
+          Pending
+        </span>
+      </div>
 
       <p>
-        Your order has not been delivered yet.
-        You can start a return after delivery.
+        Your order has not been delivered yet. You can start a
+        return after delivery.
       </p>
     </div>
-)}
-    </section>
-  );
+  )}
+  </section>
+);
 }
 
 export default ReturnsRefunds;
