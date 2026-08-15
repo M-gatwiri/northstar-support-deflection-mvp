@@ -31,5 +31,3 @@ A self-service tool for two support scenarios: **Order Status** (status, deliver
 5. **Before connecting real customer data:** address the identity-check gap above first. This MVP was built to prove the concept, not to sit safely in front of production order data.
 6. **Next build priority:** wiring `orders.js` up to a real order API is the single highest-leverage next step — both lookup components already isolate that logic into one function each, so it's a contained change.
 
-## Suggested owner handoff
-Assign one internal owner for this repo and Vercel project before the original team disengages — currently there's no named point of contact recorded anywhere in the repo itself.
