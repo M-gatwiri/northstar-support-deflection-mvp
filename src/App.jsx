@@ -2,6 +2,7 @@ import { useState } from "react";
 import SupportOption from "./components/SupportOption";
 import OrderStatus from "./components/OrderStatus";
 import ReturnsRefunds from "./components/ReturnsRefunds";
+import CheckIn from "./components/CheckIn";
 import "./App.css";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   return (
     <main className="app">
       <div className="support-container">
+
         <header className="support-header">
           <span className="brand">NORTHSTAR</span>
 
@@ -18,6 +20,10 @@ function App() {
           <p>
             Get quick answers to common questions about your orders.
           </p>
+
+          <button onClick={() => setSelectedOption("checkin")}>
+            Event Check-In
+          </button>
         </header>
 
         {!selectedOption && (
@@ -45,6 +51,11 @@ function App() {
         {selectedOption === "returns" && (
           <ReturnsRefunds goBack={() => setSelectedOption(null)} />
         )}
+
+        {selectedOption === "checkin" && (
+          <CheckIn />
+        )}
+
       </div>
     </main>
   );
