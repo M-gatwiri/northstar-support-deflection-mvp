@@ -1,12 +1,37 @@
 import express from "express";
 import dotenv from "dotenv";
 import crypto from "crypto";
+import warehouseInventory from "./warehouseData.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+const inventoryCache = new Map();
+async function syncInventory() {
+  try {
+    const response = await fetch("http://localhost:5000/warehouse/inventory");
+
+    const inventory = await response.json();
+
+    inventory.forEach((item) => {
+      inventoryCache.set(item.productId, {
+        ...item,
+        inStock: item.quantity > 0,
+        lastUpdated: new Date().toISOString(),
+      });
+    });
+
+    console.log("Inventory cache updated:");
+    console.log(inventory);
+  } catch (error) {
+    console.error("Inventory sync failed:", error.message);
+  }
+}
+syncInventory();
+
+setInterval(syncInventory, 5 * 60 * 1000);
 
 function verifyWebhook(payload, signature) {
   const secret = process.env.WEBHOOK_SECRET;
@@ -52,6 +77,24 @@ app.post("/webhook/mpesa", (req, res) => {
   res.status(200).json({
     message: "Webhook verified and accepted",
   });
+});
+
+app.get("/warehouse/inventory", (req, res) => {
+  res.json(warehouseInventory);
+});
+
+app.get("/inventory/:productId", (req, res) => {
+  const productId = req.params.productId;
+
+  const inventory = inventoryCache.get(productId);
+
+  if (!inventory) {
+    return res.status(404).json({
+      message: "Product not found in inventory",
+    });
+  }
+
+  res.json(inventory);
 });
 
 const PORT = 5000;
